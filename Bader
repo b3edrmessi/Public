@@ -1,0 +1,53 @@
+import pandas as pd
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+
+# DataFrame to store the schedule
+schedule_df = pd.DataFrame(columns=['Course', 'Day', 'Time'])
+
+# Course selection dropdown
+course_dropdown = widgets.Dropdown(
+    options=['Mathematics', 'Physics', 'Chemistry', 'Programming', 'English'],
+    description='Course:',
+)
+
+# Day and time input fields
+day_text = widgets.Text(description='Day:')
+time_text = widgets.Text(description='Time:')
+
+# Add and Show buttons
+add_button = widgets.Button(description='Add Course', button_style='success')
+show_button = widgets.Button(description='Show Schedule')
+
+# Output display area
+output = widgets.Output()
+
+# Function to handle course addition
+def add_course_clicked(b):
+    global schedule_df
+    course = course_dropdown.value
+    day = day_text.value
+    time = time_text.value
+
+    if course and day and time:
+        schedule_df = schedule_df.append({'Course': course, 'Day': day, 'Time': time}, ignore_index=True)
+        with output:
+            clear_output()
+            print("✅ Course added successfully.")
+    else:
+        with output:
+            clear_output()
+            print("⚠️ Please fill in all fields.")
+
+# Function to display the schedule
+def show_schedule(b):
+    with output:
+        clear_output()
+        if schedule_df.empty:
+            print("📋 Schedule is empty.")
+        else:
+            display(schedule_df)
+
+# Connect buttons to functions
+add_button.on_click(add_course_clicked)
+show_button.on_click
